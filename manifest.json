@@ -1,0 +1,11 @@
+{
+  "name": "Party Planner",
+  "short_name": "Party Planner",
+  "start_url": "/under-his-zeke/",
+  "display": "standalone",
+  "background_color": "#f0f7fa",
+  "theme_color": "#1b9aaa",
+  "icons": [
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { margin: 0; }
+  .pp-scroll::-webkit-scrollbar { width: 0; height: 0; }
+  .pp-scroll { scrollbar-width: none; }
+  input, textarea, button { font-family: inherit; }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 20px; background: radial-gradient(120% 90% at 50% -10%, #f3f9fb 0%, #e4eff4 55%, #dce9ef 100%); font-family: 'Hanken Grotesk', system-ui, sans-serif;">
+
+  <div style="position: relative; width: 390px; height: 844px; background: #fbfdfe; border-radius: 46px; box-shadow: 0 2px 0 rgba(255,255,255,.7) inset, 0 30px 70px -18px rgba(15,52,72,.35), 0 0 0 11px #0c2536, 0 0 0 13px #16384a; overflow: hidden; display: flex; flex-direction: column;">
+
+    <!-- status bar -->
+    <div style="height: 50px; flex: 0 0 50px; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; color: #16384a; font-weight: 600; font-size: 14px; letter-spacing: .02em; z-index: 5;">
+      <span>9:41</span>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="display: flex; align-items: flex-end; gap: 2px; height: 11px;">
+          <div style="width: 3px; height: 5px; background: #16384a; border-radius: 1px;"></div>
+          <div style="width: 3px; height: 7px; background: #16384a; border-radius: 1px;"></div>
+          <div style="width: 3px; height: 9px; background: #16384a; border-radius: 1px;"></div>
+          <div style="width: 3px; height: 11px; background: #16384a; border-radius: 1px;"></div>
+        </div>
+        <div style="width: 22px; height: 11px; border: 1.5px solid #16384a; border-radius: 3px; padding: 1.5px; display: flex;"><div style="flex: 1; background: #16384a; border-radius: 1px;"></div></div>
+      </div>
+    </div>
+
+    <!-- scroll content -->
+    <div class="pp-scroll" style="flex: 1; overflow-y: auto; overflow-x: hidden; padding: 4px 20px 110px;">
+
+      <!-- top row -->
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 4px 0 14px;">
+        <button onClick="{{ openParties }}" style="font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: #8aa6b3; border: none; background: transparent; padding: 0; cursor: pointer; display: flex; align-items: center; gap: 5px;">Your parties <span style="font-size: 13px; letter-spacing: 0;">›</span></button>
+        <button onClick="{{ openNewList }}" style="border: none; background: #eaf6f8; color: #15788f; font-weight: 600; font-size: 12.5px; padding: 7px 13px; border-radius: 999px; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+          <span style="font-size: 15px; line-height: 1; margin-top: -1px;">+</span> New list
+        </button>
+      </div>
+
+      <!-- event card -->
+      <div style="background: #ffffff; border: 1px solid #eaf2f5; border-radius: 24px; box-shadow: 0 14px 34px -20px rgba(15,52,72,.30); padding: 22px 20px 18px; margin-bottom: 22px;">
+        <button onClick="{{ openRename }}" style="display: block; text-align: left; border: none; background: transparent; padding: 0; cursor: pointer; width: 100%;">
+          <span style="font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: {{ accent }};">Wine tasting</span>
+          <h1 style="font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: 31px; line-height: 1.08; color: #112f40; margin: 7px 0 0; letter-spacing: -.01em;">{{ listName }} <span style="font-family: 'Hanken Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: #b7c8d1; vertical-align: middle;">✎</span></h1>
+        </button>
+
+        <p style="font-family: 'Newsreader', Georgia, serif; font-style: italic; font-size: 15px; line-height: 1.45; color: #5f7c8a; margin: 11px 0 16px;">{{ eventNote }}</p>
+
+        <button onClick="{{ openEvent }}" style="display: flex; gap: 22px; width: 100%; text-align: left; border: none; background: transparent; padding: 0 0 16px; cursor: pointer; border-bottom: 1px solid #eef4f6;">
+          <div>
+            <div style="font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 4px;">Where</div>
+            <div style="font-size: 13.5px; font-weight: 600; color: #25485a; line-height: 1.3;">{{ eventLocation }}</div>
+          </div>
+          <div>
+            <div style="font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 4px;">When</div>
+            <div style="font-size: 13.5px; font-weight: 600; color: #25485a; line-height: 1.3;">{{ eventDate }}</div>
+          </div>
+        </button>
+
+        <!-- links -->
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 0 4px;">
+          <sc-for list="{{ links }}" as="lnk" hint-placeholder-count="2">
+            <a href="{{ lnk.href }}" target="_blank" style="display: inline-flex; align-items: center; gap: 6px; text-decoration: none; background: #f4f9fb; border: 1px solid #e6f0f4; color: #3a6072; font-size: 12px; font-weight: 600; padding: 6px 11px; border-radius: 9px;">
+              <span style="width: 5px; height: 5px; border-radius: 50%; background: {{ accent }};"></span>{{ lnk.label }} <span style="color: #b2c5cf;">↗</span>
+            </a>
+          </sc-for>
+        </div>
+
+        <!-- attendees link -->
+        <button onClick="{{ openAttendees }}" style="display: flex; align-items: center; justify-content: space-between; width: 100%; margin-top: 16px; padding: 12px 14px; border-radius: 15px; border: 1px solid #e9f1f4; background: #fafdfe; cursor: pointer;">
+          <div style="display: flex; align-items: center; gap: 11px;">
+            <div style="display: flex;">
+              <sc-for list="{{ attendeePreview }}" as="av" hint-placeholder-count="4">
+                <div style="{{ av.style }}">{{ av.initials }}</div>
+              </sc-for>
+            </div>
+            <div style="text-align: left;">
+              <div style="font-size: 13.5px; font-weight: 700; color: #1f4254;">Attendees</div>
+              <div style="font-size: 11.5px; color: #88a2af; font-weight: 500;">{{ attendeeSummary }}</div>
+            </div>
+          </div>
+          <span style="color: #b7c8d1; font-size: 20px; font-weight: 400;">›</span>
+        </button>
+      </div>
+
+      <!-- progress + style switcher -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <div style="font-size: 12px; font-weight: 600; color: #5f7c8a;">{{ progressLabel }}</div>
+        <div style="display: flex; gap: 0; background: #eef4f7; border-radius: 9px; padding: 3px;">
+          <button onClick="{{ setAiry }}" style="{{ tabAiryStyle }}">Airy</button>
+          <button onClick="{{ setMinimal }}" style="{{ tabMinimalStyle }}">Minimal</button>
+          <button onClick="{{ setBold }}" style="{{ tabBoldStyle }}">Bold</button>
+        </div>
+      </div>
+      <div style="height: 6px; border-radius: 99px; background: #e7eef2; overflow: hidden; margin-bottom: 24px;">
+        <div style="{{ progressBarStyle }}"></div>
+      </div>
+
+      <!-- sections -->
+      <sc-for list="{{ renderSections }}" as="sec" hint-placeholder-count="3">
+        <div style="margin-bottom: 26px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; gap: 10px;">
+            <h2 style="font-family: 'Newsreader', Georgia, serif; font-weight: 500; font-size: 21px; color: #16384a; margin: 0; letter-spacing: -.01em; min-width: 0; overflow: hidden; flex: 0 1 auto;">
+              <sc-if value="{{ sec.sectionNotEditing }}" hint-placeholder-val="{{ true }}">
+                <button onClick="{{ sec.onSectionRename }}" style="font: inherit; color: inherit; border: none; background: transparent; padding: 0; cursor: pointer; text-align: left; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block;" title="Tap to rename section">{{ sec.name }}</button>
+              </sc-if>
+              <sc-if value="{{ sec.sectionEditing }}" hint-placeholder-val="{{ false }}">
+                <input value="{{ sec.sectionNameDraft }}" onChange="{{ sec.onSectionNameInput }}" onKeyDown="{{ sec.onSectionNameKey }}" onBlur="{{ sec.onSectionNameBlur }}" autoFocus="{{ true }}" style="font: inherit; color: inherit; width: 100%; border: none; border-bottom: 1.5px solid {{ accent }}; background: transparent; padding: 0 0 2px; outline: none;" />
+              </sc-if>
+            </h2>
+            <div style="display: flex; align-items: center; gap: 9px; flex: 0 0 auto;">
+              <span style="font-size: 11px; font-weight: 600; color: #a7bcc6;">{{ sec.countLabel }}</span>
+              <div style="display: flex; gap: 3px;">
+                <button onClick="{{ sec.onMoveUp }}" style="{{ sec.upStyle }}" title="Move section up">▲</button>
+                <button onClick="{{ sec.onMoveDown }}" style="{{ sec.downStyle }}" title="Move section down">▼</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <sc-for list="{{ sec.groups }}" as="g">
+              <div style="{{ g.cardStyle }}">
+                <sc-if value="{{ g.showChipBtn }}" hint-placeholder-val="{{ true }}">
+                  <button onClick="{{ g.onRename }}" style="{{ g.chipStyle }}" title="Tap to rename">{{ g.name }}</button>
+                </sc-if>
+                <sc-if value="{{ g.showRenameInput }}" hint-placeholder-val="{{ false }}">
+                  <input value="{{ g.nameDraft }}" onChange="{{ g.onNameInput }}" onKeyDown="{{ g.onNameKey }}" onBlur="{{ g.onNameBlur }}" autoFocus="{{ true }}" style="{{ g.renameInputStyle }}" />
+                </sc-if>
+                <div style="display: flex; flex-direction: column; gap: 2px; margin-top: 8px;">
+                  <sc-for list="{{ g.tasks }}" as="t">
+                    <div draggable="{{ t.draggable }}" onDragStart="{{ t.onDragStart }}" onDragEnter="{{ t.onDragEnter }}" onDragOver="{{ prevent }}" onDragEnd="{{ t.onDragEnd }}" onDrop="{{ prevent }}" style="{{ t.rowStyle }}">
+                      <div onClick="{{ t.onToggle }}" style="{{ t.boxStyle }}">
+                        <sc-if value="{{ t.done }}" hint-placeholder-val="{{ false }}"><span style="color: #fff; font-size: 12px; font-weight: 800; line-height: 1;">✓</span></sc-if>
+                      </div>
+                      <sc-if value="{{ t.notEditing }}" hint-placeholder-val="{{ true }}">
+                        <span onClick="{{ t.onEdit }}" style="{{ t.textStyle }}" title="Tap to edit">{{ t.text }}</span>
+                      </sc-if>
+                      <sc-if value="{{ t.editing }}" hint-placeholder-val="{{ false }}">
+                        <input value="{{ t.textDraft }}" onChange="{{ t.onTextInput }}" onKeyDown="{{ t.onTextKey }}" onBlur="{{ t.onTextBlur }}" autoFocus="{{ true }}" style="{{ t.inputStyle }}" />
+                      </sc-if>
+                      <button onClick="{{ t.onRemove }}" style="border: none; background: transparent; color: #cdd9e0; font-size: 17px; line-height: 1; cursor: pointer; padding: 2px 4px; opacity: .0;" style-hover="opacity: 1;">×</button>
+                      <div style="display: grid; grid-template-columns: repeat(2, 3px); gap: 3px; cursor: grab; padding: 4px 2px;">
+                        <div style="width: 3px; height: 3px; border-radius: 50%; background: #c6d6de;"></div><div style="width: 3px; height: 3px; border-radius: 50%; background: #c6d6de;"></div>
+                        <div style="width: 3px; height: 3px; border-radius: 50%; background: #c6d6de;"></div><div style="width: 3px; height: 3px; border-radius: 50%; background: #c6d6de;"></div>
+                        <div style="width: 3px; height: 3px; border-radius: 50%; background: #c6d6de;"></div><div style="width: 3px; height: 3px; border-radius: 50%; background: #c6d6de;"></div>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+
+                <sc-if value="{{ g.showAddInput }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; gap: 7px; margin-top: 8px; align-items: center;">
+                    <input value="{{ g.draftVal }}" onChange="{{ g.onDraft }}" onKeyDown="{{ g.onDraftKey }}" placeholder="Add to this group…" autoFocus="{{ true }}" style="flex: 1; border: none; border-bottom: 1.5px solid #d9e6ec; background: transparent; padding: 6px 2px; font-size: 14px; color: #1f4254; outline: none;" />
+                    <button onClick="{{ g.onAdd }}" style="border: none; background: {{ accent }}; color: #fff; font-weight: 600; font-size: 12.5px; padding: 7px 13px; border-radius: 9px; cursor: pointer;">Add</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ g.showAddBtn }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ g.onToggleAdd }}" style="border: none; background: transparent; color: #9fb6c1; font-size: 12.5px; font-weight: 600; cursor: pointer; padding: 8px 2px 2px; display: flex; align-items: center; gap: 6px;"><span style="font-size: 15px; margin-top: -1px;">+</span> Add item</button>
+                </sc-if>
+              </div>
+            </sc-for>
+
+            <!-- section footer: new item (ungrouped) / new group -->
+            <sc-if value="{{ sec.showAdds }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <sc-if value="{{ sec.addItemOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; gap: 7px; align-items: center;">
+                    <input value="{{ sec.itemDraft }}" onChange="{{ sec.onItemDraft }}" onKeyDown="{{ sec.onItemKey }}" placeholder="New item…" autoFocus="{{ true }}" style="flex: 1; border: 1.5px solid #d9e6ec; border-radius: 11px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none;" />
+                    <button onClick="{{ sec.onAddItem }}" style="border: none; background: {{ accent }}; color: #fff; font-weight: 600; font-size: 13px; padding: 11px 15px; border-radius: 11px; cursor: pointer;">Add</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ sec.addGroupOpen }}" hint-placeholder-val="{{ false }}">
+                  <div style="display: flex; gap: 7px; align-items: center;">
+                    <input value="{{ sec.groupDraft }}" onChange="{{ sec.onGroupDraft }}" onKeyDown="{{ sec.onGroupKey }}" placeholder="New group name…" autoFocus="{{ true }}" style="flex: 1; border: 1.5px solid #d9e6ec; border-radius: 11px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none;" />
+                    <button onClick="{{ sec.onAddGroup }}" style="border: none; background: {{ accent }}; color: #fff; font-weight: 600; font-size: 13px; padding: 11px 15px; border-radius: 11px; cursor: pointer;">Create</button>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ sec.addClosed }}" hint-placeholder-val="{{ true }}">
+                  <div style="display: flex; gap: 8px;">
+                    <button onClick="{{ sec.onToggleNewItem }}" style="flex: 1; border: 1.5px dashed #cfdee5; background: transparent; color: #6f93a2; font-weight: 600; font-size: 13px; padding: 11px; border-radius: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;"><span style="font-size: 15px; margin-top: -1px;">+</span> New item</button>
+                    <button onClick="{{ sec.onToggleNewGroup }}" style="flex: 1; border: 1.5px dashed #cfdee5; background: transparent; color: #6f93a2; font-weight: 600; font-size: 13px; padding: 11px; border-radius: 11px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;"><span style="font-size: 15px; margin-top: -1px;">+</span> New group</button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+
+      <!-- empty state -->
+      <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align: center; padding: 40px 20px; color: #93acb8;">
+          <div style="font-family: 'Newsreader', Georgia, serif; font-style: italic; font-size: 19px; color: #5f7c8a; margin-bottom: 6px;">{{ emptyTitle }}</div>
+          <div style="font-size: 13px;">{{ emptySub }}</div>
+        </div>
+      </sc-if>
+
+      <!-- new section -->
+      <sc-if value="{{ addingSection }}" hint-placeholder-val="{{ false }}">
+        <div style="display: flex; gap: 8px; align-items: center; margin-top: 6px;">
+          <input value="{{ newSectionDraft }}" onChange="{{ onNewSectionInput }}" onKeyDown="{{ onNewSectionKey }}" placeholder="Section name…" autoFocus="{{ true }}" style="flex: 1; border: 1.5px solid #d9e6ec; border-radius: 11px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none;" />
+          <button onClick="{{ addSection }}" style="border: none; background: {{ accent }}; color: #fff; font-weight: 600; font-size: 13px; padding: 11px 15px; border-radius: 11px; cursor: pointer;">Add</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ notAddingSection }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ startAddSection }}" style="width: 100%; border: 1.5px dashed #cfdee5; background: transparent; color: #6f93a2; font-weight: 600; font-size: 13.5px; padding: 14px; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;"><span style="font-size: 17px; margin-top: -1px;">+</span> New section</button>
+      </sc-if>
+
+    </div>
+
+    <!-- bottom nav -->
+    <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 88px; padding: 0 40px 22px; display: flex; align-items: center; justify-content: space-around; background: linear-gradient(to top, #fbfdfe 62%, rgba(251,253,254,0)); ">
+      <button onClick="{{ goTodo }}" style="{{ navTodoStyle }}">
+        <div style="width: 19px; height: 19px; border-radius: 6px; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center;"></div>
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: .02em;">To-Do</span>
+        <span style="{{ todoBadgeStyle }}">{{ todoCount }}</span>
+      </button>
+      <button onClick="{{ goDone }}" style="{{ navDoneStyle }}">
+        <div style="width: 19px; height: 19px; border-radius: 6px; border: 2px solid currentColor; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 900;">✓</div>
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: .02em;">Done</span>
+        <span style="{{ doneBadgeStyle }}">{{ doneCount }}</span>
+      </button>
+    </div>
+
+    <!-- ===================== SHEETS ===================== -->
+    <sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}">
+      <div onClick="{{ closeSheet }}" style="position: absolute; inset: 0; background: rgba(14,40,55,.34); z-index: 20;"></div>
+    </sc-if>
+
+    <!-- Attendees sheet -->
+    <sc-if value="{{ showAttendees }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 78%; background: #fbfdfe; border-radius: 28px 28px 0 0; z-index: 21; display: flex; flex-direction: column; box-shadow: 0 -18px 50px -20px rgba(14,40,55,.4);">
+        <div style="padding: 14px 22px 6px; display: flex; flex-direction: column; align-items: center;">
+          <div style="width: 38px; height: 4px; border-radius: 99px; background: #dde7ec; margin-bottom: 16px;"></div>
+          <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+            <div>
+              <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 24px; color: #16384a; margin: 0;">Attendees</h2>
+              <div style="font-size: 12px; color: #88a2af; font-weight: 500; margin-top: 2px;">{{ attendeeSummary }}</div>
+            </div>
+            <button onClick="{{ closeSheet }}" style="border: none; background: #eef4f7; color: #5f7c8a; width: 30px; height: 30px; border-radius: 50%; font-size: 17px; cursor: pointer;">×</button>
+          </div>
+        </div>
+        <div class="pp-scroll" style="flex: 1; overflow-y: auto; padding: 12px 22px 16px;">
+          <div style="display: flex; gap: 7px; margin-bottom: 18px;">
+            <input value="{{ newAttendee }}" onChange="{{ onNewAttendeeInput }}" onKeyDown="{{ onNewAttendeeKey }}" placeholder="Add someone…" style="flex: 1; border: 1.5px solid #e1ebf0; border-radius: 12px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none;" />
+            <button onClick="{{ addAttendee }}" style="border: none; background: {{ accent }}; color: #fff; font-weight: 600; font-size: 13px; padding: 0 16px; border-radius: 12px; cursor: pointer;">Invite</button>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <sc-for list="{{ attendeeRows }}" as="a" hint-placeholder-count="5">
+              <button onClick="{{ a.onOpen }}" style="display: flex; align-items: center; gap: 12px; padding: 11px 13px; border: 1px solid #eef4f6; border-radius: 16px; background: #fff; cursor: pointer; text-align: left; width: 100%;">
+                <div style="{{ a.avatarStyle }}">{{ a.initials }}</div>
+                <div style="flex: 1; min-width: 0;">
+                  <div style="font-size: 14px; font-weight: 600; color: #1f4254;">{{ a.name }}</div>
+                  <sc-if value="{{ a.hasPlus }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size: 11.5px; font-weight: 600; color: {{ accent }}; margin-top: 2px;">{{ a.plusLabel }}</div>
+                  </sc-if>
+                  <sc-if value="{{ a.hasNote }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size: 11.5px; color: #93acb8; margin-top: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: flex; align-items: center; gap: 5px;"><span style="font-size: 10px;">✎</span>{{ a.notePreview }}</div>
+                  </sc-if>
+                </div>
+                <span style="{{ a.rsvpPillStyle }}">{{ a.rsvpLabel }}</span>
+                <span style="color: #c2d2da; font-size: 19px;">›</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Contact detail sheet -->
+    <sc-if value="{{ showContact }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 88%; background: #fbfdfe; border-radius: 28px 28px 0 0; z-index: 22; padding: 14px 22px 24px; box-shadow: 0 -18px 50px -20px rgba(14,40,55,.4); display: flex; flex-direction: column;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+          <button onClick="{{ backToAttendees }}" style="border: none; background: #eef4f7; color: #5f7c8a; width: 30px; height: 30px; border-radius: 50%; font-size: 19px; line-height: 1; cursor: pointer;">‹</button>
+          <span style="font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #9fb6c1;">Contact</span>
+          <button onClick="{{ closeSheet }}" style="border: none; background: #eef4f7; color: #5f7c8a; width: 30px; height: 30px; border-radius: 50%; font-size: 17px; cursor: pointer;">×</button>
+        </div>
+        <div class="pp-scroll" style="overflow-y: auto;">
+          <div style="{{ contact.avatarStyle }}">{{ contact.initials }}</div>
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 24px; color: #16384a; margin: 0 0 20px; text-align: center;">{{ contact.name }}</h2>
+
+          <label style="display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 8px;">RSVP</label>
+          <div style="display: flex; gap: 7px; margin-bottom: 20px;">
+            <button onClick="{{ contact.setGoing }}" style="{{ contact.goingStyle }}">Going</button>
+            <button onClick="{{ contact.setMaybe }}" style="{{ contact.maybeStyle }}">Maybe</button>
+            <button onClick="{{ contact.setNo }}" style="{{ contact.noStyle }}">No</button>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 15px; border: 1px solid #eef4f6; border-radius: 14px; background: #fff; margin-bottom: 12px;">
+            <div>
+              <div style="font-size: 14px; font-weight: 700; color: #1f4254;">Bringing a +1</div>
+              <div style="font-size: 12px; color: #88a2af; margin-top: 1px;">A guest is joining them</div>
+            </div>
+            <div onClick="{{ contact.onTogglePlus }}" style="{{ contact.plusTrackStyle }}">
+              <div style="{{ contact.plusKnobStyle }}"></div>
+            </div>
+          </div>
+          <sc-if value="{{ contact.showPlusName }}" hint-placeholder-val="{{ false }}">
+            <input value="{{ contact.plusOneName }}" onChange="{{ contact.onPlusName }}" placeholder="Guest's name (optional)" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 12px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none; margin-bottom: 16px;" />
+          </sc-if>
+
+          <label style="display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fb6c1; margin: 6px 0 8px;">Notes</label>
+          <textarea value="{{ contact.note }}" onChange="{{ contact.onNote }}" rows="2" placeholder="Dietary needs, plus-one details…" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 12px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none; margin-bottom: 18px; resize: none; font-family: inherit;"></textarea>
+
+          <button onClick="{{ contact.onRemove }}" style="width: 100%; border: 1px solid #f0d9d4; background: #fdf6f4; color: #c2685f; font-weight: 600; font-size: 13.5px; padding: 12px; border-radius: 12px; cursor: pointer;">Remove from list</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- Rename sheet -->
+    <sc-if value="{{ showRename }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; background: #fbfdfe; border-radius: 28px 28px 0 0; z-index: 21; padding: 14px 22px 30px; box-shadow: 0 -18px 50px -20px rgba(14,40,55,.4);">
+        <div style="width: 38px; height: 4px; border-radius: 99px; background: #dde7ec; margin: 0 auto 18px;"></div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 23px; color: #16384a; margin: 0 0 14px;">Rename list</h2>
+        <input value="{{ listName }}" onChange="{{ onNameInput }}" autoFocus="{{ true }}" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 13px; background: #fff; padding: 13px 14px; font-size: 16px; font-weight: 600; color: #1f4254; outline: none; margin-bottom: 16px;" />
+        <button onClick="{{ closeSheet }}" style="width: 100%; border: none; background: {{ accent }}; color: #fff; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 14px; cursor: pointer;">Save</button>
+      </div>
+    </sc-if>
+
+    <!-- Event details sheet -->
+    <sc-if value="{{ showEvent }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; max-height: 86%; background: #fbfdfe; border-radius: 28px 28px 0 0; z-index: 21; padding: 14px 22px 28px; box-shadow: 0 -18px 50px -20px rgba(14,40,55,.4); display: flex; flex-direction: column;">
+        <div style="width: 38px; height: 4px; border-radius: 99px; background: #dde7ec; margin: 0 auto 18px;"></div>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 23px; color: #16384a; margin: 0 0 16px;">Event details</h2>
+        <div class="pp-scroll" style="overflow-y: auto;">
+          <label style="display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 6px;">Location</label>
+          <input value="{{ eventLocation }}" onChange="{{ onLocInput }}" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 12px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none; margin-bottom: 16px;" />
+          <label style="display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 6px;">Date & time</label>
+          <input type="datetime-local" value="{{ eventDateTime }}" onChange="{{ onDateInput }}" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 12px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none; margin-bottom: 16px; font-family: inherit;" />
+          <label style="display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 6px;">Note</label>
+          <textarea value="{{ eventNote }}" onChange="{{ onNoteInput }}" rows="2" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 12px; background: #fff; padding: 11px 13px; font-size: 14px; color: #1f4254; outline: none; margin-bottom: 16px; resize: none; font-family: inherit;"></textarea>
+          <label style="display: block; font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #9fb6c1; margin-bottom: 8px;">Links</label>
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+            <sc-for list="{{ linkRows }}" as="lr" hint-placeholder-count="2">
+              <div style="display: flex; gap: 7px; align-items: center;">
+                <input value="{{ lr.label }}" onChange="{{ lr.onLabel }}" placeholder="Label" style="flex: 1; border: 1.5px solid #e1ebf0; border-radius: 10px; background: #fff; padding: 9px 11px; font-size: 13px; color: #1f4254; outline: none;" />
+                <input value="{{ lr.url }}" onChange="{{ lr.onUrl }}" placeholder="url" style="flex: 1; border: 1.5px solid #e1ebf0; border-radius: 10px; background: #fff; padding: 9px 11px; font-size: 13px; color: #6f93a2; outline: none;" />
+                <button onClick="{{ lr.onRemove }}" style="border: none; background: transparent; color: #cdd9e0; font-size: 18px; cursor: pointer;">×</button>
+              </div>
+            </sc-for>
+          </div>
+          <button onClick="{{ addLink }}" style="border: none; background: transparent; color: #6f93a2; font-weight: 600; font-size: 13px; cursor: pointer; padding: 2px 0 18px;">+ Add link</button>
+        </div>
+        <button onClick="{{ closeSheet }}" style="width: 100%; border: none; background: {{ accent }}; color: #fff; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 14px; cursor: pointer; flex: 0 0 auto;">Done</button>
+      </div>
+    </sc-if>
+
+    <!-- Your Parties overview -->
+    <sc-if value="{{ showParties }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; inset: 0; background: #fbfdfe; z-index: 23; display: flex; flex-direction: column;">
+        <div style="padding: 52px 22px 12px; display: flex; align-items: center; justify-content: space-between;">
+          <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 27px; color: #16384a; margin: 0;">Your parties</h2>
+          <button onClick="{{ closeSheet }}" style="border: none; background: #eef4f7; color: #5f7c8a; width: 32px; height: 32px; border-radius: 50%; font-size: 18px; cursor: pointer;">×</button>
+        </div>
+        <div class="pp-scroll" style="flex: 1; overflow-y: auto; padding: 6px 22px 28px; display: flex; flex-direction: column; gap: 12px;">
+          <sc-for list="{{ partyCards }}" as="p" hint-placeholder-count="3">
+            <button onClick="{{ p.onOpen }}" style="{{ p.cardStyle }}">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                <span style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 20px; color: #16384a;">{{ p.listName }}</span>
+                <sc-if value="{{ p.active }}" hint-placeholder-val="{{ false }}"><span style="font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #fff; background: {{ accent }}; padding: 4px 9px; border-radius: 999px; flex: 0 0 auto;">Current</span></sc-if>
+              </div>
+              <div style="font-size: 13px; color: #5f7c8a; font-weight: 600; margin-top: 9px;">{{ p.dateLabel }}</div>
+              <div style="font-size: 12.5px; color: #88a2af; margin-top: 3px;">{{ p.attendeeLabel }}</div>
+            </button>
+          </sc-for>
+          <button onClick="{{ openNewList }}" style="border: 1.5px dashed #cfdee5; background: transparent; color: #6f93a2; font-weight: 600; font-size: 13.5px; padding: 14px; border-radius: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 4px;"><span style="font-size: 17px; margin-top: -1px;">+</span> New party</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <!-- New list sheet -->
+    <sc-if value="{{ showNewList }}" hint-placeholder-val="{{ false }}">
+      <div style="position: absolute; left: 0; right: 0; bottom: 0; background: #fbfdfe; border-radius: 28px 28px 0 0; z-index: 21; padding: 14px 22px 28px; box-shadow: 0 -18px 50px -20px rgba(14,40,55,.4);">
+        <div style="width: 38px; height: 4px; border-radius: 99px; background: #dde7ec; margin: 0 auto 18px;"></div>
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: {{ accent }};">Start fresh</span>
+        <h2 style="font-family: 'Newsreader', serif; font-weight: 500; font-size: 23px; color: #16384a; margin: 6px 0 16px;">New party list</h2>
+        <input value="{{ newListName }}" onChange="{{ onNewListInput }}" placeholder="e.g. Summer rooftop dinner" autoFocus="{{ true }}" style="width: 100%; border: 1.5px solid #e1ebf0; border-radius: 13px; background: #fff; padding: 13px 14px; font-size: 16px; font-weight: 600; color: #1f4254; outline: none; margin-bottom: 10px;" />
+        <p style="font-size: 12.5px; color: #88a2af; margin: 0 0 18px; line-height: 1.5;">We'll set you up with Grocery list, Decorations and Menu sections to start.</p>
+        <button onClick="{{ createNewList }}" style="width: 100%; border: none; background: {{ accent }}; color: #fff; font-weight: 700; font-size: 15px; padding: 14px; border-radius: 14px; cursor: pointer;">Create list</button>
+      </div>
+    </sc-if>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;: {&quot;width&quot;: 470, &quot;height&quot;: 940}, &quot;accent&quot;: {&quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#1b9aaa&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#1b9aaa&quot;, &quot;#0e7c9b&quot;, &quot;#2f8f7e&quot;, &quot;#3a7ca5&quot;]}}">
+class Component extends DCLogic {
+  state = {
+    tab: 'todo',
+    sheet: null,
+    selectedAttendee: null,
+    style: 'airy',
+    listName: 'Coastal Wine Tasting',
+    eventLocation: 'The Vine Loft · 214 Harbor St',
+    eventDateTime: '2026-07-18T19:00',
+    eventNote: 'A relaxed evening of coastal wines, cheese, and good company.',
+    links: [
+      { id: 'l1', label: 'Wine pairing guide', url: 'vivino.com/pairings' },
+      { id: 'l2', label: 'Evening playlist', url: 'open.spotify.com/coastal' },
+    ],
+    attendees: [
+      { id: 'a1', name: 'Maya Chen', rsvp: 'going', plusOne: true, plusOneName: 'Leo Park', note: 'No shellfish' },
+      { id: 'a2', name: 'Daniel Ortiz', rsvp: 'going', plusOne: false, plusOneName: '', note: '' },
+      { id: 'a3', name: 'Priya Nair', rsvp: 'maybe', plusOne: false, plusOneName: '', note: 'Vegetarian' },
+      { id: 'a4', name: 'Tom Becker', rsvp: 'no', plusOne: false, plusOneName: '', note: '' },
+      { id: 'a5', name: 'Sofia Russo', rsvp: 'going', plusOne: true, plusOneName: '', note: '' },
+    ],
+    parties: [
+      { id: 'p2', listName: 'Rooftop Birthday Bash', eventDateTime: '2026-06-06T20:00', eventLocation: 'Sky Terrace, 9th floor', eventNote: 'Cocktails and city views for Sam\'s 30th.', links: [], attendees: [ {id:'b1',name:'Sam Lee',rsvp:'going',plusOne:false,plusOneName:'',note:''},{id:'b2',name:'Ava Diaz',rsvp:'going',plusOne:true,plusOneName:'',note:''},{id:'b3',name:'Noah Kim',rsvp:'maybe',plusOne:false,plusOneName:'',note:''} ], sections: [] },
+      { id: 'p3', listName: 'Summer Garden Brunch', eventDateTime: '2026-08-15T11:00', eventLocation: 'The Greenhouse', eventNote: 'Late-summer brunch in the garden.', links: [], attendees: [ {id:'c1',name:'Ivy Chen',rsvp:'going',plusOne:false,plusOneName:'',note:''},{id:'c2',name:'Marc Roy',rsvp:'going',plusOne:false,plusOneName:'',note:''} ], sections: [] },
+      { id: 'p4', listName: 'Board Game Night', eventDateTime: '2026-05-22T19:30', eventLocation: 'Our place', eventNote: 'Snacks, strategy, and rivalries.', links: [], attendees: [ {id:'d1',name:'Tess Vo',rsvp:'going',plusOne:false,plusOneName:'',note:''},{id:'d2',name:'Jon Park',rsvp:'no',plusOne:false,plusOneName:'',note:''},{id:'d3',name:'Mia Fox',rsvp:'going',plusOne:false,plusOneName:'',note:''},{id:'d4',name:'Leo Ray',rsvp:'maybe',plusOne:false,plusOneName:'',note:''} ], sections: [] },
+    ],
+    sections: [
+      { id: 'sec_g', name: 'Grocery list', groups: [
+        { id: 'g_ung', ungrouped: true, name: '', tasks: [
+          { id: 't1', text: 'Pinot Noir — 2 bottles', done: false },
+          { id: 't2', text: 'Cabernet Sauvignon', done: false },
+          { id: 't4', text: 'Sauvignon Blanc', done: false },
+          { id: 't5', text: 'Chardonnay', done: false },
+          { id: 't6', text: 'Prosecco — chilled', done: true },
+          { id: 't7', text: 'Aged gouda', done: false },
+          { id: 't8', text: 'Triple-cream brie', done: false },
+          { id: 't9', text: 'Dark chocolate (70%)', done: false },
+          { id: 't10', text: 'Marcona almonds', done: true },
+        ]},
+      ]},
+      { id: 'sec_d', name: 'Decorations', groups: [
+        { id: 'd_table', name: 'Tablescape', tasks: [
+          { id: 't11', text: 'Linen table runner', done: false },
+          { id: 't12', text: 'Tasting score cards', done: false },
+          { id: 't13', text: 'Wine charms', done: true },
+        ]},
+        { id: 'd_amb', name: 'Ambiance', tasks: [
+          { id: 't14', text: 'String lights', done: false },
+          { id: 't15', text: 'Beeswax candles', done: true },
+          { id: 't16', text: 'Fresh eucalyptus', done: false },
+        ]},
+      ]},
+      { id: 'sec_m', name: 'Menu', groups: [
+        { id: 'm_app', name: 'To start', tasks: [
+          { id: 't17', text: 'Charcuterie board', done: false },
+          { id: 't18', text: 'Whipped ricotta crostini', done: false },
+        ]},
+        { id: 'm_main', name: 'Plates', tasks: [
+          { id: 't19', text: 'Wild mushroom risotto', done: false },
+        ]},
+        { id: 'm_dess', name: 'Sweet', tasks: [
+          { id: 't20', text: 'Berry pavlova', done: false },
+        ]},
+      ]},
+    ],
+    drafts: {},
+    openAdd: {},
+    openAddItem: {},
+    itemDrafts: {},
+    openAddGroup: {},
+    groupDrafts: {},
+    editingGroup: null,
+    editingGroupName: '',
+    editingSection: null,
+    editingSectionName: '',
+    editingTask: null,
+    editingTaskText: '',
+    newSectionDraft: '',
+    addingSection: false,
+    newListName: '',
+    newAttendee: '',
+    drag: null,
+  };
+
+  uid() { return 'id' + Math.random().toString(36).slice(2, 8); }
+
+  // ---- nav / sheets ----
+  setTab(t) { this.setState({ tab: t, sheet: null }); }
+  setStyle(s) { this.setState({ style: s }); }
+  openSheet(s) { this.setState({ sheet: s }); }
+  closeSheet() { this.setState({ sheet: null, addingSection: false }); }
+
+  // ---- tasks ----
+  toggleTask(sid, gid, tid) {
+    this.setState(s => ({ sections: s.sections.map(sec => sec.id !== sid ? sec : { ...sec, groups: sec.groups.map(g => g.id !== gid ? g : { ...g, tasks: g.tasks.map(t => t.id !== tid ? t : { ...t, done: !t.done }) }) }) }));
+  }
+  removeTask(sid, gid, tid) {
+    this.setState(s => ({ sections: s.sections.map(sec => sec.id !== sid ? sec : { ...sec, groups: sec.groups.map(g => g.id !== gid ? g : { ...g, tasks: g.tasks.filter(t => t.id !== tid) }) }) }));
+  }
+  setDraft(gid, val) { this.setState(s => ({ drafts: { ...s.drafts, [gid]: val } })); }
+  toggleAdd(gid) { this.setState(s => ({ openAdd: { ...s.openAdd, [gid]: !s.openAdd[gid] } })); }
+  addTask(sid, gid) {
+    const text = (this.state.drafts[gid] || '').trim();
+    if (!text) return;
+    this.setState(s => ({
+      sections: s.sections.map(sec => sec.id !== sid ? sec : { ...sec, groups: sec.groups.map(g => g.id !== gid ? g : { ...g, tasks: [...g.tasks, { id: this.uid(), text, done: false }] }) }),
+      drafts: { ...s.drafts, [gid]: '' },
+    }));
+  }
+
+  // ---- ungrouped items + groups within a section ----
+  toggleNewItem(sid) { this.setState(s => ({ openAddItem: { ...s.openAddItem, [sid]: !s.openAddItem[sid] }, openAddGroup: { ...s.openAddGroup, [sid]: false } })); }
+  setItemDraft(sid, v) { this.setState(s => ({ itemDrafts: { ...s.itemDrafts, [sid]: v } })); }
+  addUngroupedItem(sid) {
+    const text = (this.state.itemDrafts[sid] || '').trim();
+    if (!text) return;
+    this.setState(s => ({
+      sections: s.sections.map(sec => {
+        if (sec.id !== sid) return sec;
+        let groups = [...sec.groups];
+        let ug = groups.find(g => g.ungrouped);
+        if (!ug) { ug = { id: this.uid(), ungrouped: true, name: '', tasks: [] }; groups = [ug, ...groups]; }
+        groups = groups.map(g => g.id !== ug.id ? g : { ...g, tasks: [...g.tasks, { id: this.uid(), text, done: false }] });
+        return { ...sec, groups };
+      }),
+      itemDrafts: { ...s.itemDrafts, [sid]: '' },
+    }));
+  }
+  toggleNewGroup(sid) { this.setState(s => ({ openAddGroup: { ...s.openAddGroup, [sid]: !s.openAddGroup[sid] }, openAddItem: { ...s.openAddItem, [sid]: false } })); }
+  setGroupDraft(sid, v) { this.setState(s => ({ groupDrafts: { ...s.groupDrafts, [sid]: v } })); }
+  addGroup(sid) {
+    const name = (this.state.groupDrafts[sid] || '').trim() || 'New group';
+    this.setState(s => ({
+      sections: s.sections.map(sec => sec.id !== sid ? sec : { ...sec, groups: [...sec.groups, { id: this.uid(), name, tasks: [] }] }),
+      groupDrafts: { ...s.groupDrafts, [sid]: '' },
+      openAddGroup: { ...s.openAddGroup, [sid]: false },
+    }));
+  }
+  startRenameGroup(sid, gid, name) { this.setState({ editingGroup: gid, editingGroupName: name }); }
+  setEditingGroupName(v) { this.setState({ editingGroupName: v }); }
+  cancelRename() { this.setState({ editingGroup: null, editingGroupName: '' }); }
+
+  // ---- section rename ----
+  startRenameSection(sid, name) { this.setState({ editingSection: sid, editingSectionName: name }); }
+  setEditingSectionName(v) { this.setState({ editingSectionName: v }); }
+  cancelRenameSection() { this.setState({ editingSection: null, editingSectionName: '' }); }
+  commitRenameSection(sid) {
+    const name = (this.state.editingSectionName || '').trim();
+    this.setState(s => ({ sections: name ? s.sections.map(sec => sec.id !== sid ? sec : { ...sec, name }) : s.sections, editingSection: null, editingSectionName: '' }));
+  }
+
+  // ---- task (list item) rename ----
+  startRenameTask(tid, text) { this.setState({ editingTask: tid, editingTaskText: text }); }
+  setEditingTaskText(v) { this.setState({ editingTaskText: v }); }
+  cancelRenameTask() { this.setState({ editingTask: null, editingTaskText: '' }); }
+  commitRenameTask(sid, gid, tid) {
+    const text = (this.state.editingTaskText || '').trim();
+    this.setState(s => ({ sections: text ? s.sections.map(sec => sec.id !== sid ? sec : { ...sec, groups: sec.groups.map(g => g.id !== gid ? g : { ...g, tasks: g.tasks.map(t => t.id !== tid ? t : { ...t, text }) }) }) : s.sections, editingTask: null, editingTaskText: '' }));
+  }
+  commitRenameGroup(sid, gid) {
+    const name = (this.state.editingGroupName || '').trim();
+    this.setState(s => ({
+      sections: name ? s.sections.map(sec => sec.id !== sid ? sec : { ...sec, groups: sec.groups.map(g => g.id !== gid ? g : { ...g, name }) }) : s.sections,
+      editingGroup: null, editingGroupName: '',
+    }));
+  }
+
+  // ---- sections ----
+  startAddSection() { this.setState({ addingSection: true }); }
+  setNewSection(v) { this.setState({ newSectionDraft: v }); }
+  addSection() {
+    const name = (this.state.newSectionDraft || '').trim();
+    if (!name) return;
+    this.setState(s => ({ sections: [...s.sections, { id: this.uid(), name, groups: [{ id: this.uid(), name: 'General', tasks: [] }] }], newSectionDraft: '', addingSection: false }));
+  }
+
+  // ---- drag reorder (within a group) ----
+  onDragStart(sid, gid, tid) { this.setState({ drag: { sid, gid, tid } }); }
+  onDragEnter(sid, gid, tid) {
+    const d = this.state.drag;
+    if (!d || d.gid !== gid || d.tid === tid) return;
+    this.setState(s => ({ sections: s.sections.map(sec => {
+      if (sec.id !== sid) return sec;
+      return { ...sec, groups: sec.groups.map(g => {
+        if (g.id !== gid) return g;
+        const arr = [...g.tasks];
+        const from = arr.findIndex(t => t.id === d.tid);
+        const to = arr.findIndex(t => t.id === tid);
+        if (from < 0 || to < 0) return g;
+        const [m] = arr.splice(from, 1);
+        arr.splice(to, 0, m);
+        return { ...g, tasks: arr };
+      }) };
+    }) }));
+  }
+  onDragEnd() { this.setState({ drag: null }); }
+
+  // ---- list meta ----
+  setName(v) { this.setState({ listName: v }); }
+  setNewListName(v) { this.setState({ newListName: v }); }
+  createNewList() {
+    const name = (this.state.newListName || '').trim() || 'Untitled party';
+    this.setState(s => ({
+      parties: [...s.parties, { id: this.uid(), listName: s.listName, eventDateTime: s.eventDateTime, eventLocation: s.eventLocation, eventNote: s.eventNote, links: s.links, attendees: s.attendees, sections: s.sections }],
+      listName: name, newListName: '', sheet: null, tab: 'todo',
+      eventLocation: 'Add a location', eventDateTime: '', eventNote: 'Add a few words about the occasion.',
+      links: [], attendees: [],
+      sections: [
+        { id: this.uid(), name: 'Grocery list', groups: [] },
+        { id: this.uid(), name: 'Decorations', groups: [] },
+        { id: this.uid(), name: 'Menu', groups: [] },
+      ],
+    }));
+  }
+
+  selectParty(id) {
+    if (id === '__active') { this.setState({ sheet: null }); return; }
+    this.setState(s => {
+      const target = s.parties.find(p => p.id === id);
+      if (!target) return { sheet: null };
+      const snap = { id: this.uid(), listName: s.listName, eventDateTime: s.eventDateTime, eventLocation: s.eventLocation, eventNote: s.eventNote, links: s.links, attendees: s.attendees, sections: s.sections };
+      const rest = s.parties.filter(p => p.id !== id);
+      return {
+        listName: target.listName, eventDateTime: target.eventDateTime,
+        eventLocation: target.eventLocation || 'Add a location', eventNote: target.eventNote || '',
+        links: target.links || [], attendees: target.attendees || [], sections: target.sections || [],
+        parties: [...rest, snap], sheet: null, tab: 'todo',
+      };
+    });
+  }
+
+  // ---- event ----
+  setEventField(field, v) { this.setState({ [field]: v }); }
+  setLink(id, field, v) { this.setState(s => ({ links: s.links.map(l => l.id !== id ? l : { ...l, [field]: v }) })); }
+  addLink() { this.setState(s => ({ links: [...s.links, { id: this.uid(), label: '', url: '' }] })); }
+  removeLink(id) { this.setState(s => ({ links: s.links.filter(l => l.id !== id) })); }
+
+  // ---- attendees ----
+  setRsvp(id, v) { this.setState(s => ({ attendees: s.attendees.map(a => a.id !== id ? a : { ...a, rsvp: v }) })); }
+  setNewAttendee(v) { this.setState({ newAttendee: v }); }
+  addAttendee() {
+    const name = (this.state.newAttendee || '').trim();
+    if (!name) return;
+    this.setState(s => ({ attendees: [...s.attendees, { id: this.uid(), name, rsvp: 'going' }], newAttendee: '' }));
+  }
+  removeAttendee(id) { this.setState(s => ({ attendees: s.attendees.filter(a => a.id !== id) })); }
+
+  // ---- contact detail / +1 ----
+  openContact(id) { this.setState({ sheet: 'contact', selectedAttendee: id }); }
+  togglePlusOne(id) { this.setState(s => ({ attendees: s.attendees.map(a => a.id !== id ? a : { ...a, plusOne: !a.plusOne }) })); }
+  setPlusOneName(id, v) { this.setState(s => ({ attendees: s.attendees.map(a => a.id !== id ? a : { ...a, plusOneName: v }) })); }
+  setAttendeeNote(id, v) { this.setState(s => ({ attendees: s.attendees.map(a => a.id !== id ? a : { ...a, note: v }) })); }
+
+  // ---- section reorder ----
+  moveSection(sid, dir) {
+    this.setState(s => {
+      const arr = [...s.sections];
+      const i = arr.findIndex(x => x.id === sid);
+      const j = i + dir;
+      if (i < 0 || j < 0 || j >= arr.length) return {};
+      const [m] = arr.splice(i, 1); arr.splice(j, 0, m);
+      return { sections: arr };
+    });
+  }
+
+  // ---- date formatting ----
+  formatDateTime(iso) {
+    if (!iso) return 'Add a date';
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return iso;
+    const day = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    let h = d.getHours(); const m = d.getMinutes();
+    const ap = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+    return day + ' · ' + h + ':' + (m < 10 ? '0' + m : m) + ' ' + ap;
+  }
+
+  // ---- helpers ----
+  initials(name) {
+    const p = name.trim().split(/\s+/);
+    return ((p[0] || '')[0] || '').toUpperCase() + ((p[1] || '')[0] || '').toUpperCase();
+  }
+  variants(accent) {
+    return {
+      airy: {
+        card: { background: '#ffffff', border: '1px solid #ecf3f6', borderRadius: '18px', boxShadow: '0 10px 26px -20px rgba(15,52,72,.35)', padding: '14px 15px 12px' },
+        chip: { display: 'inline-block', color: '#15788f', background: '#eaf6f8', borderRadius: '999px', padding: '4px 11px', fontWeight: 700, fontSize: '10.5px', letterSpacing: '.07em', textTransform: 'uppercase' },
+      },
+      minimal: {
+        card: { background: 'transparent', border: 'none', borderRadius: '0', boxShadow: 'none', padding: '2px 2px 14px', borderBottom: '1px solid #e7eef2' },
+        chip: { display: 'inline-block', color: '#6f93a2', background: 'transparent', padding: '2px 0', fontWeight: 700, fontSize: '10.5px', letterSpacing: '.16em', textTransform: 'uppercase' },
+      },
+      bold: {
+        card: { background: '#eef9fb', border: '1px solid #cdeaf0', borderRadius: '18px', boxShadow: 'none', padding: '14px 15px 12px' },
+        chip: { display: 'inline-block', color: '#0c6478', background: '#bfe7ee', borderRadius: '8px', padding: '4px 11px', fontWeight: 800, fontSize: '10.5px', letterSpacing: '.06em', textTransform: 'uppercase' },
+      },
+    };
+  }
+
+  renderVals() {
+    const s = this.state;
+    const accent = this.props.accent || '#1b9aaa';
+    const wantDone = s.tab === 'done';
+    const V = this.variants(accent)[s.style];
+    const avColors = ['#1b9aaa', '#2f7f95', '#3a8f7e', '#4f6f99', '#7a8db0', '#5a93a8'];
+
+    // counts
+    let total = 0, doneCount = 0;
+    s.sections.forEach(sec => sec.groups.forEach(g => g.tasks.forEach(t => { total++; if (t.done) doneCount++; })));
+    const todoCount = total - doneCount;
+    const pct = total ? Math.round(doneCount / total * 100) : 0;
+
+    // render sections for current tab
+    const sectionCount = s.sections.length;
+    const caretBase = { border: '1px solid #e3edf2', background: '#fff', borderRadius: '7px', width: '24px', height: '24px', fontSize: '8px', lineHeight: 1, cursor: 'pointer', color: '#6f93a2', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 0 };
+    const caretOff = { ...caretBase, color: '#d6e0e6', cursor: 'default' };
+    const builtSections = s.sections.map((sec, sidx) => {
+      const groupViews = sec.groups.map(g => {
+        const isUg = !!g.ungrouped;
+        const tasks = g.tasks.filter(t => t.done === wantDone).map(t => ({
+          id: t.id, text: t.text, done: t.done,
+          rowStyle: {
+            display: 'flex', alignItems: 'center', gap: '11px', padding: '7px 2px',
+            cursor: 'grab', borderRadius: '8px',
+            opacity: s.drag && s.drag.tid === t.id ? 0.4 : 1,
+          },
+          boxStyle: {
+            flex: '0 0 auto', width: '21px', height: '21px', borderRadius: '7px',
+            border: t.done ? 'none' : '2px solid #cddde4',
+            background: t.done ? accent : 'transparent',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
+          },
+          textStyle: {
+            flex: 1, fontSize: '14.5px', lineHeight: 1.35,
+            color: t.done ? '#a7bcc6' : '#274c5e',
+            textDecoration: t.done ? 'line-through' : 'none', fontWeight: 500, cursor: 'text',
+          },
+          onToggle: () => this.toggleTask(sec.id, g.id, t.id),
+          onRemove: () => this.removeTask(sec.id, g.id, t.id),
+          onDragStart: () => this.onDragStart(sec.id, g.id, t.id),
+          onDragEnter: () => this.onDragEnter(sec.id, g.id, t.id),
+          onDragEnd: () => this.onDragEnd(),
+          editing: s.editingTask === t.id,
+          notEditing: s.editingTask !== t.id,
+          draggable: s.editingTask !== t.id,
+          textDraft: s.editingTaskText,
+          onEdit: () => this.startRenameTask(t.id, t.text),
+          onTextInput: e => this.setEditingTaskText(e.target.value),
+          onTextKey: e => { if (e.key === 'Enter') this.commitRenameTask(sec.id, g.id, t.id); if (e.key === 'Escape') this.cancelRenameTask(); },
+          onTextBlur: () => this.commitRenameTask(sec.id, g.id, t.id),
+          inputStyle: { flex: 1, fontSize: '14.5px', fontWeight: 500, color: '#274c5e', border: 'none', borderBottom: '1.5px solid ' + accent, background: 'transparent', padding: '2px 0', outline: 'none', fontFamily: 'inherit' },
+        }));
+        // ungrouped only shows when it has tasks; named groups always show in To-Do
+        const visible = isUg ? tasks.length > 0 : (wantDone ? tasks.length > 0 : true);
+        const addOpen = !!s.openAdd[g.id];
+        const editing = s.editingGroup === g.id;
+        return {
+          id: g.id, name: g.name, isUngrouped: isUg, tasks, _visible: visible,
+          cardStyle: V.card,
+          chipStyle: { ...V.chip, border: 'none', cursor: 'pointer', fontFamily: 'inherit' },
+          renameInputStyle: { ...V.chip, background: '#fff', border: '1.5px solid ' + accent, cursor: 'text', outline: 'none', fontFamily: 'inherit', maxWidth: '180px' },
+          showChipBtn: !isUg && !editing,
+          showRenameInput: !isUg && editing,
+          nameDraft: s.editingGroupName,
+          onRename: () => this.startRenameGroup(sec.id, g.id, g.name),
+          onNameInput: e => this.setEditingGroupName(e.target.value),
+          onNameKey: e => { if (e.key === 'Enter') this.commitRenameGroup(sec.id, g.id); if (e.key === 'Escape') this.cancelRename(); },
+          onNameBlur: () => this.commitRenameGroup(sec.id, g.id),
+          showAddBtn: !isUg && !wantDone && !addOpen,
+          showAddInput: !isUg && !wantDone && addOpen,
+          draftVal: s.drafts[g.id] || '',
+          onDraft: e => this.setDraft(g.id, e.target.value),
+          onDraftKey: e => { if (e.key === 'Enter') this.addTask(sec.id, g.id); },
+          onAdd: () => this.addTask(sec.id, g.id),
+          onToggleAdd: () => this.toggleAdd(g.id),
+        };
+      }).filter(g => g._visible);
+      // ungrouped items first, then named groups
+      const allGroups = [...groupViews.filter(g => g.isUngrouped), ...groupViews.filter(g => !g.isUngrouped)];
+      let sd = 0, st = 0;
+      sec.groups.forEach(g => g.tasks.forEach(t => { st++; if (t.done) sd++; }));
+      const aiOpen = !!s.openAddItem[sec.id];
+      const agOpen = !!s.openAddGroup[sec.id];
+      return {
+        id: sec.id, name: sec.name, groups: allGroups, _empty: allGroups.length === 0, countLabel: sd + '/' + st,
+        upStyle: sidx > 0 ? caretBase : caretOff,
+        downStyle: sidx < sectionCount - 1 ? caretBase : caretOff,
+        onMoveUp: () => this.moveSection(sec.id, -1),
+        onMoveDown: () => this.moveSection(sec.id, 1),
+        sectionEditing: s.editingSection === sec.id,
+        sectionNotEditing: s.editingSection !== sec.id,
+        sectionNameDraft: s.editingSectionName,
+        onSectionRename: () => this.startRenameSection(sec.id, sec.name),
+        onSectionNameInput: e => this.setEditingSectionName(e.target.value),
+        onSectionNameKey: e => { if (e.key === 'Enter') this.commitRenameSection(sec.id); if (e.key === 'Escape') this.cancelRenameSection(); },
+        onSectionNameBlur: () => this.commitRenameSection(sec.id),
+        showAdds: !wantDone,
+        addItemOpen: aiOpen, addGroupOpen: agOpen, addClosed: !aiOpen && !agOpen,
+        itemDraft: s.itemDrafts[sec.id] || '',
+        onItemDraft: e => this.setItemDraft(sec.id, e.target.value),
+        onItemKey: e => { if (e.key === 'Enter') this.addUngroupedItem(sec.id); },
+        onAddItem: () => this.addUngroupedItem(sec.id),
+        onToggleNewItem: () => this.toggleNewItem(sec.id),
+        groupDraft: s.groupDrafts[sec.id] || '',
+        onGroupDraft: e => this.setGroupDraft(sec.id, e.target.value),
+        onGroupKey: e => { if (e.key === 'Enter') this.addGroup(sec.id); },
+        onAddGroup: () => this.addGroup(sec.id),
+        onToggleNewGroup: () => this.toggleNewGroup(sec.id),
+      };
+    });
+
+    const renderSections = wantDone ? builtSections.filter(sec => !sec._empty) : builtSections;
+    const isEmpty = wantDone ? renderSections.length === 0 : false;
+
+    // parties overview
+    const activeSnap = { id: '__active', listName: s.listName, eventDateTime: s.eventDateTime, count: s.attendees.length, active: true };
+    const others = s.parties.map(p => ({ id: p.id, listName: p.listName, eventDateTime: p.eventDateTime, count: (p.attendees || []).length, active: false }));
+    const partyCards = [activeSnap, ...others].sort((a, b) => (b.eventDateTime || '').localeCompare(a.eventDateTime || '')).map(c => ({
+      id: c.id, listName: c.listName, active: c.active,
+      dateLabel: this.formatDateTime(c.eventDateTime),
+      attendeeLabel: c.count + (c.count === 1 ? ' guest' : ' guests'),
+      cardStyle: { display: 'block', width: '100%', textAlign: 'left', background: '#fff', border: '1px solid ' + (c.active ? accent : '#eaf2f5'), borderRadius: '18px', boxShadow: '0 10px 26px -20px rgba(15,52,72,.35)', padding: '16px 17px', cursor: 'pointer' },
+      onOpen: () => this.selectParty(c.id),
+    }));
+
+    // attendees
+    const order = { going: 0, maybe: 1, no: 2 };
+    const goingN = s.attendees.filter(a => a.rsvp === 'going').length;
+    const maybeN = s.attendees.filter(a => a.rsvp === 'maybe').length;
+    const guestN = s.attendees.filter(a => a.plusOne).length;
+    const rsvpMeta = { going: { l: 'Going', c: accent }, maybe: { l: 'Maybe', c: '#d8a13c' }, no: { l: 'No', c: '#cf7d6f' } };
+    const attendeeRows = s.attendees.map((a, i) => ({
+      id: a.id, name: a.name, initials: this.initials(a.name),
+      avatarStyle: { flex: '0 0 auto', width: '38px', height: '38px', borderRadius: '50%', background: avColors[i % avColors.length], color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: 700 },
+      hasPlus: !!a.plusOne,
+      plusLabel: a.plusOne ? (a.plusOneName ? '+1 · ' + a.plusOneName : '+1 guest') : '',
+      hasNote: !!(a.note && a.note.trim()),
+      notePreview: a.note ? (a.note.length > 34 ? a.note.slice(0, 34).trim() + '…' : a.note) : '',
+      rsvpLabel: rsvpMeta[a.rsvp].l,
+      rsvpPillStyle: { display: 'inline-flex', alignItems: 'center', fontSize: '11.5px', fontWeight: 700, color: rsvpMeta[a.rsvp].c, background: '#f5f9fb', borderRadius: '999px', padding: '5px 11px', flex: '0 0 auto' },
+      onOpen: () => this.openContact(a.id),
+    }));
+    // contact detail
+    const segLargeBase = { flex: 1, border: '1.5px solid', borderRadius: '11px', padding: '11px 4px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' };
+    const segLarge = (active, c) => active ? { ...segLargeBase, background: c, color: '#fff', borderColor: c } : { ...segLargeBase, background: '#fff', color: '#9fb6c1', borderColor: '#e6eef2' };
+    const sel = s.attendees.find(a => a.id === s.selectedAttendee);
+    const selIdx = s.attendees.findIndex(a => a.id === s.selectedAttendee);
+    const contact = sel ? {
+      name: sel.name, initials: this.initials(sel.name),
+      avatarStyle: { width: '64px', height: '64px', borderRadius: '50%', background: avColors[(selIdx < 0 ? 0 : selIdx) % avColors.length], color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '22px', fontWeight: 700, margin: '0 auto 10px' },
+      goingStyle: segLarge(sel.rsvp === 'going', accent),
+      maybeStyle: segLarge(sel.rsvp === 'maybe', '#d8a13c'),
+      noStyle: segLarge(sel.rsvp === 'no', '#cf7d6f'),
+      setGoing: () => this.setRsvp(sel.id, 'going'),
+      setMaybe: () => this.setRsvp(sel.id, 'maybe'),
+      setNo: () => this.setRsvp(sel.id, 'no'),
+      showPlusName: !!sel.plusOne,
+      plusTrackStyle: { width: '46px', height: '27px', borderRadius: '99px', background: sel.plusOne ? accent : '#dbe6ec', position: 'relative', cursor: 'pointer', flex: '0 0 auto', transition: 'background .2s' },
+      plusKnobStyle: { position: 'absolute', top: '3px', left: sel.plusOne ? '22px' : '3px', width: '21px', height: '21px', borderRadius: '50%', background: '#fff', boxShadow: '0 1px 3px rgba(0,0,0,.25)', transition: 'left .2s' },
+      onTogglePlus: () => this.togglePlusOne(sel.id),
+      plusOneName: sel.plusOneName || '',
+      onPlusName: e => this.setPlusOneName(sel.id, e.target.value),
+      note: sel.note || '',
+      onNote: e => this.setAttendeeNote(sel.id, e.target.value),
+      onRemove: () => { const id = sel.id; this.setState(st2 => ({ attendees: st2.attendees.filter(a => a.id !== id), sheet: 'attendees' })); },
+    } : { name: '', initials: '', avatarStyle: {}, goingStyle: {}, maybeStyle: {}, noStyle: {}, setGoing: () => {}, setMaybe: () => {}, setNo: () => {}, showPlusName: false, plusTrackStyle: {}, plusKnobStyle: {}, onTogglePlus: () => {}, plusOneName: '', onPlusName: () => {}, note: '', onNote: () => {}, onRemove: () => {} };
+    const attendeePreview = s.attendees.slice(0, 4).map((a, i) => ({
+      initials: this.initials(a.name),
+      style: { width: '28px', height: '28px', borderRadius: '50%', background: avColors[i % avColors.length], color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', fontWeight: 700, border: '2px solid #fff', marginLeft: i === 0 ? '0' : '-9px' },
+    }));
+
+    // links (display + edit)
+    const links = s.links.map(l => ({ id: l.id, label: l.label, href: (l.url || '').startsWith('http') ? l.url : 'https://' + l.url }));
+    const linkRows = s.links.map(l => ({
+      id: l.id, label: l.label, url: l.url,
+      onLabel: e => this.setLink(l.id, 'label', e.target.value),
+      onUrl: e => this.setLink(l.id, 'url', e.target.value),
+      onRemove: () => this.removeLink(l.id),
+    }));
+
+    // style switcher tab styles
+    const swBase = { border: 'none', borderRadius: '7px', padding: '5px 11px', fontSize: '11.5px', fontWeight: 700, cursor: 'pointer' };
+    const sw = on => on ? { ...swBase, background: '#fff', color: '#16384a', boxShadow: '0 1px 3px rgba(15,52,72,.14)' } : { ...swBase, background: 'transparent', color: '#8aa6b3' };
+
+    // bottom nav styles
+    const navBase = { border: 'none', background: 'transparent', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', position: 'relative', padding: '6px 18px' };
+    const badge = on => ({ position: 'absolute', top: '-2px', right: '4px', minWidth: '16px', height: '16px', borderRadius: '99px', background: on ? accent : '#b8cad3', color: '#fff', fontSize: '9.5px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 4px' });
+
+    return {
+      accent,
+      listName: s.listName,
+      eventLocation: s.eventLocation, eventDate: this.formatDateTime(s.eventDateTime), eventDateTime: s.eventDateTime, eventNote: s.eventNote,
+      links, linkRows,
+      renderSections, isEmpty,
+      emptyTitle: wantDone ? 'Nothing checked off yet' : 'Everything is done',
+      emptySub: wantDone ? 'Tick things off in the To-Do tab.' : 'Nicely done — your list is all clear.',
+
+      progressLabel: doneCount + ' of ' + total + ' done',
+      progressBarStyle: { height: '100%', width: pct + '%', background: accent, borderRadius: '99px', transition: 'width .3s ease' },
+
+      // style switcher
+      setAiry: () => this.setStyle('airy'), setMinimal: () => this.setStyle('minimal'), setBold: () => this.setStyle('bold'),
+      tabAiryStyle: sw(s.style === 'airy'), tabMinimalStyle: sw(s.style === 'minimal'), tabBoldStyle: sw(s.style === 'bold'),
+
+      // nav
+      goTodo: () => this.setTab('todo'), goDone: () => this.setTab('done'),
+      todoCount, doneCount,
+      navTodoStyle: { ...navBase, color: s.tab === 'todo' ? accent : '#9fb6c1' },
+      navDoneStyle: { ...navBase, color: s.tab === 'done' ? accent : '#9fb6c1' },
+      todoBadgeStyle: badge(s.tab === 'todo'), doneBadgeStyle: badge(s.tab === 'done'),
+
+      // attendees
+      attendeeRows, attendeePreview,
+      attendeeSummary: s.attendees.length + ' invited · ' + goingN + ' going' + (guestN ? ' · ' + guestN + ' +1' : ''),
+      newAttendee: s.newAttendee,
+      onNewAttendeeInput: e => this.setNewAttendee(e.target.value),
+      onNewAttendeeKey: e => { if (e.key === 'Enter') this.addAttendee(); },
+      addAttendee: () => this.addAttendee(),
+
+      // sections add
+      addingSection: s.addingSection, notAddingSection: !s.addingSection,
+      newSectionDraft: s.newSectionDraft,
+      onNewSectionInput: e => this.setNewSection(e.target.value),
+      onNewSectionKey: e => { if (e.key === 'Enter') this.addSection(); },
+      startAddSection: () => this.startAddSection(),
+      addSection: () => this.addSection(),
+
+      // sheets
+      sheetOpen: !!s.sheet,
+      showAttendees: s.sheet === 'attendees', showRename: s.sheet === 'rename',
+      showEvent: s.sheet === 'event', showNewList: s.sheet === 'newlist',
+      openAttendees: () => this.openSheet('attendees'), openRename: () => this.openSheet('rename'),
+      openEvent: () => this.openSheet('event'), openNewList: () => this.openSheet('newlist'),
+      closeSheet: () => this.closeSheet(),
+      showContact: s.sheet === 'contact', contact,
+      backToAttendees: () => this.openSheet('attendees'),
+      showParties: s.sheet === 'parties', partyCards,
+      openParties: () => this.openSheet('parties'),
+
+      onNameInput: e => this.setName(e.target.value),
+      onLocInput: e => this.setEventField('eventLocation', e.target.value),
+      onDateInput: e => this.setState({ eventDateTime: e.target.value }),
+      onNoteInput: e => this.setEventField('eventNote', e.target.value),
+      addLink: () => this.addLink(),
+
+      newListName: s.newListName,
+      onNewListInput: e => this.setNewListName(e.target.value),
+      createNewList: () => this.createNewList(),
+
+      prevent: e => e.preventDefault(),
+    };
+  }
+}
+</script>
+</body>
+</html>
